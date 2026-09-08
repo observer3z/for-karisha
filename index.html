@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Для Кариши ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0d0f18;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 85% 80%, rgba(236, 72, 153, 0.2) 0%, transparent 40%);
+            overflow-x: hidden;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(22, 27, 46, 0.85);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 24px;
+            padding: 35px 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(139, 92, 246, 0.15);
+            backdrop-filter: blur(10px);
+            position: relative;
+            text-align: center;
+        }
+
+        .screen {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+            opacity: 1;
+        }
+
+        h2 {
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 25px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+            position: relative;
+            justify-content: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+            border: none;
+            border-radius: 14px;
+            padding: 18px 24px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
+            width: 100%;
+            display: block;
+            text-align: center;
+            line-height: 1.2;
+            text-decoration: none;
+            -webkit-appearance: none;
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        /* Certificate Blank Style */
+        .cert-blank {
+            background: linear-gradient(135deg, #1e1b4b 0%, #2e103f 100%);
+            border: 2px dashed #f43f5e;
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-top: 10px;
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(244, 63, 94, 0.15);
+        }
+
+        .cert-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fb7185;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            line-height: 1.4;
+        }
+
+        .field-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .blank-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: none;
+            border-bottom: 2px solid #f43f5e;
+            padding: 12px 15px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+
+        .blank-input:focus {
+            background: rgba(15, 23, 42, 0.95);
+            border-bottom-color: #ec4899;
+        }
+
+        .field-caption {
+            font-size: 11px;
+            color: #94a3b8;
+            text-align: center;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .cert-info {
+            font-size: 13px;
+            color: #cbd5e1;
+            margin: 12px 0;
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .cert-info span {
+            color: #fb7185;
+            font-weight: 600;
+        }
+
+        .cert-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .sad-emoji {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Анимация поцелуя экрана */
+        .kiss-screen-anim {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.2);
+            font-size: 130px;
+            pointer-events: none;
+            z-index: 9999;
+            animation: kissPop 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            filter: drop-shadow(0 0 25px rgba(236, 72, 153, 0.8));
+        }
+
+        @keyframes kissPop {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.2) rotate(-15deg);
+            }
+            40% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(2.4) rotate(0deg);
+            }
+            75% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(2.1) rotate(5deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(2.8) rotate(0deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <!-- Screen 0: Start -->
+    <div class="screen active" id="s0">
+        <h2>Привет, кареглазик ❤️<br><br>Знаю, что ты сегодня устала и была огромной умницей у меня. Согласна ответить на парочку вопросиков? &lt;3</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="goTo(1)">Да ❤️</a>
+        </div>
+    </div>
+
+    <!-- Screen 1 -->
+    <div class="screen" id="s1">
+        <h2>1. Кто моя любимая умничка?</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="goTo(2)">Я</a>
+            <a href="javascript:void(0)" class="btn" onclick="goTo(2)">Конечно я</a>
+        </div>
+    </div>
+
+    <!-- Screen 2 -->
+    <div class="screen" id="s2">
+        <h2>2. Что сейчас на первом месте в списке планов?</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="goTo(3)">🛌 Отдыхать и залезть под пледик</a>
+            <a href="javascript:void(0)" class="btn" onclick="goTo(3)">🚿 Принять тепленький душик</a>
+        </div>
+    </div>
+
+    <!-- Screen 3 -->
+    <div class="screen" id="s3">
+        <h2>3. Куда хочешь чмок? 💋</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="kissAndGo(4)">🌸 В носик</a>
+            <a href="javascript:void(0)" class="btn" onclick="kissAndGo(4)">✨ В лобик</a>
+        </div>
+    </div>
+
+    <!-- Screen 4 -->
+    <div class="screen" id="s4">
+        <h2>4. Знаешь ли ты, что кое-кто по тебе сильно скучает прямо сейчас?</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="goTo(5)">Конечно знаю</a>
+            <a href="javascript:void(0)" class="btn" onclick="goTo(5)">Пфф догадываюсь</a>
+        </div>
+    </div>
+
+    <!-- Screen 5 -->
+    <div class="screen" id="s5">
+        <h2>5. Опрос окончен. Готова активировать свой подарок?</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="goTo(7)">Да!</a>
+            <a href="javascript:void(0)" class="btn" style="background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5;" onclick="goTo(6)">Не хочу, иди нахуй</a>
+        </div>
+    </div>
+
+    <!-- Screen 6: Easter Egg -->
+    <div class="screen" id="s6">
+        <div class="sad-emoji">🥺</div>
+        <h2>Ну за что ты так...</h2>
+        <div class="btn-container">
+            <a href="javascript:void(0)" class="btn" onclick="goTo(7)">Да я шучу, дура) ❤️</a>
+        </div>
+    </div>
+
+    <!-- Screen 7: Certificate Blank -->
+    <div class="screen" id="s7">
+        <div class="cert-blank">
+            <div class="cert-header">СЕРТИФИКАТ МОЕЙ ЛЮБИМОЙ ДЕВОЧКЕ КАРИШЕ</div>
+            
+            <div class="field-group">
+                <input type="text" class="blank-input" id="wish-input" placeholder="Напиши сюда свое желание..." autocomplete="off">
+                <div class="field-caption">(любое желание)</div>
+            </div>
+
+            <div class="cert-info">
+                📅 <b>Дата выдачи:</b> <span id="cert-date">сегодня</span><br>
+                ⏳ <b>Срок действия:</b> <span>до бесконечности</span><br>
+                📍 <b>Способ активации:</b> <span>при личной встрече (или дистанционно по требованию)</span>
+            </div>
+
+            <div class="cert-footer">
+                <span>Статус: <b>ДЕЙСТВИТЕЛЕН</b></span>
+            </div>
+        </div>
+
+        <p style="font-size: 12px; color: #94a3b8; margin-top: 20px;">
+            📸 Заполни поле, сделай скриншот и отправь мне в ЛС!
+        </p>
+    </div>
+
+</div>
+
+<script>
+    function goTo(screenNum) {
+        document.querySelectorAll('.screen').forEach(s => {
+            s.classList.remove('active');
+        });
+        document.getElementById(`s${screenNum}`).classList.add('active');
+        
+        if (screenNum === 7) {
+            const today = new Date();
+            const dateStr = today.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+            document.getElementById('cert-date').innerText = dateStr;
+        }
+    }
+
+    function kissAndGo(nextScreen) {
+        showKissAnimation();
+        setTimeout(() => {
+            goTo(nextScreen);
+        }, 600);
+    }
+
+    function showKissAnimation() {
+        const kiss = document.createElement('div');
+        kiss.innerText = '💋';
+        kiss.className = 'kiss-screen-anim';
+        document.body.appendChild(kiss);
+
+        setTimeout(() => {
+            kiss.remove();
+        }, 1200);
+    }
+</script>
+
+</body>
+</html>
